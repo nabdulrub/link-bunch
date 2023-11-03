@@ -17,5 +17,7 @@ export const MongoDB = () => {
     }
   };
 
+  const config = () => {};
+
   return { connect };
 };

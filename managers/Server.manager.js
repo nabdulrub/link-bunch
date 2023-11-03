@@ -3,6 +3,7 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import { fileURLToPath, URL } from "url";
 const app = express();
 
@@ -17,6 +18,7 @@ export const ServerManager = () => {
   const setMiddlewares = () => {
     app.use(cors());
     app.use(express.json());
+    app.use(cookieParser());
     dotenv.config();
   };
 
@@ -25,9 +27,9 @@ export const ServerManager = () => {
       console.error(err.stack);
       res.status(500).send("Something went wrong!");
     });
-    app.use((req, res, next) => {
-      res.status(404).send("Route not found. Please check api folder");
-    });
+    // app.use((req, res, next) => {
+    //   res.status(404).send("Route not found. Please check api folder");
+    // });
   };
 
   const setRoutes = () => {
