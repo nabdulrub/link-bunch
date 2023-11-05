@@ -1,20 +1,27 @@
 import express from "express";
 const router = express.Router();
-import { AuthManager } from "../../managers/Auth.manager.js";
 import { validationResult } from "express-validator";
 import { registerValidator } from "../../entities/users/users.validator.js";
+import { UserManager } from "../../entities/users/users.manager.js";
 
-router.post("/", registerValidator, (req, res) => {
-  const auth = AuthManager();
+const user = UserManager();
+
+router.post("/", registerValidator, async (req, res) => {
+  const { email, password } = req.body;
+
   const errors = validationResult(req);
   if (errors.errors.length > 0) {
     console.log(errors);
-    return res.send("Bad Input");
+    return res.status(406).json("Bad Input");
   }
 
-  const token = auth.createToken(123321);
+  const newUser = await user.createUser({ email, password });
 
-  res.send({ ...token });
+  if (newUser.status !== 200) {
+    return res.status(newUser.status).json(newUser.message);
+  }
+
+  res.status(newUser.status).json({ ...newUser });
 });
 
 export default router;

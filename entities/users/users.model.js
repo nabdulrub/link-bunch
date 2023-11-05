@@ -1,21 +1,30 @@
 import mongoose from "mongoose";
-import { username, password } from "../_common/schema.models.js";
+import { schema } from "../_common/schema.models.js";
 const Schema = mongoose.Schema;
 
 // Create a schema for the User
 const userSchema = new Schema({
-  username: {
+  email: {
     unique: true,
     required: true,
-    ...username,
+    ...schema.email,
   },
   password: {
     required: true,
-    ...password,
+    ...schema.password,
+  },
+  img: {
+    require: false,
+    ...schema.avatar,
+  },
+  username: {
+    require: false,
+    unique: true,
+    ...schema.username,
   },
 });
 
 // Create a model for the User
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;

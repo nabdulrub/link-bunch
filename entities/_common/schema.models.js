@@ -1,4 +1,4 @@
-module.exports = {
+export const schema = {
   id: {
     path: "id",
     type: String,
