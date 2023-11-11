@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./hooks/AuthProvider.jsx";
+import App from "./App.jsx";
 import "./index.css";
-import SignInForm from "./components/auth/SignInForm.jsx";
-import RegisterForm from "./components/auth/RegisterForm.jsx";
-import Dashboard from "./components/dashboard/Dashboard.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Register from "./pages/Register.jsx";
+import SignIn from "./pages/SignIn.jsx";
+import ProfileDetails from "./components/dashboard/ProfileDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,11 +14,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <SignInForm />,
+        element: <SignIn />,
       },
       {
         path: "/register",
-        element: <RegisterForm />,
+        element: <Register />,
       },
       {
         path: "/dashboard",
@@ -30,8 +30,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

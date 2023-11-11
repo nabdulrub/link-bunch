@@ -1,44 +1,68 @@
 import links from "../../assets/images/icon-links-header.svg";
 import profile from "../../assets/images/icon-profile-details-header.svg";
-import devlinks from "../../assets/images/logo-devlinks-large.svg";
-import { useAuth } from "../../hooks/AuthProvider";
+import large_devlinks from "../../assets/images/logo-devlinks-large.svg";
+import small_devlinks from "../../assets/images/logo-devlinks-small.svg";
+import eye from "../../assets/images/icon-preview-header.svg";
+
+import { getSession, signOut } from "../../hooks/useAuth";
 import Button from "../Button";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Navbar = () => {
-  const { user, signOut } = useAuth();
+  const session = getSession();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab");
 
-  return (
+  const isLinksActive = activeTab === "links" || activeTab === null;
+  const isProfileActive = activeTab === "profile";
+
+  return session ? (
     <div className="bg-white p-4 rounded-xl max-w-[1920px] mx-auto flex justify-between items-center mb-6">
-      <img src={devlinks} alt="logo" />
+      <picture>
+        <source media="(max-width:768px)" srcSet={small_devlinks} />
+        <img src={large_devlinks} alt="logo" />
+      </picture>
+
       <div className="flex gap-4">
-        <a href={`/dashboard`}>
-          <button className="flex gap-1 items-center bg-[#EFEBFF] text-[#633CFF] font-bold rounded-lg px-[1.69rem] py-[.69rem]">
-            <img src={links} alt="link" className="text-[#633CFF] w-5" />
-            Links
-          </button>
-        </a>
-        <a href={`/profile/${user?.id}`}>
-          <button className="flex gap-1 items-center  hover:text-[#633CFF] transition-all duration-200 font-bold  px-[1.69rem] py-[.69rem]">
-            <img src={profile} alt="link" className="w-5" />
-            Profile Details
-          </button>
-        </a>
+        <Button
+          href={`/dashboard?tab=links`}
+          variant={isLinksActive ? "secondary" : "ghost"}
+          icon={<img src={links} alt="link" className="text-[#633CFF] w-6 " />}
+        >
+          <span className="hidden md:block">Links</span>
+        </Button>
+        <Button
+          href={`/dashboard?tab=profile`}
+          variant={isProfileActive ? "secondary" : "ghost"}
+          className="gap-2"
+          icon={<img src={profile} alt="link" className="w-7" />}
+        >
+          <span className="hidden md:block">Profile Details</span>
+        </Button>
       </div>
 
-      <div className="flex gap-4">
-        <button className="flex gap-1 border-2 border-[#633CFF] bg-white transition-all duration-300 hover:bg-[#EFEBFF] text-[#633CFF] font-bold rounded-lg px-[1.69rem] py-[.69rem]">
-          Preview
-        </button>
-        <button
-          onClick={signOut}
-          className="flex gap-1 border-2 border-red-500 bg-white transition-all duration-300 hover:bg-[#EFEBFF] text-red-500 font-bold rounded-lg px-[1.69rem] py-[.69rem]"
+      <div className="flex gap-4 items-center justify-center">
+        <Button
+          href={"/preview"}
+          variant="outline"
+          icon={<img src={eye} alt="eye" className="block md:hidden" />}
+        >
+          <span className="hidden md:block">Preview</span>
+        </Button>
+        <Button
+          variant="destructive"
+          className={"lg:block hidden"}
+          onClick={() => {
+            signOut();
+            navigate("/");
+          }}
         >
           Sign Out
-        </button>
-        <Button>Name</Button>
+        </Button>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default Navbar;

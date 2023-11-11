@@ -14,6 +14,11 @@ const Input = ({
   placeholder,
   className,
   validate,
+  nolabel,
+  value,
+  onClick,
+  disabled,
+  onBlur,
 }) => {
   return (
     <Controller
@@ -32,10 +37,12 @@ const Input = ({
         validate: validate,
       }}
       render={({ field }) => (
-        <div className="grid gap-1 w-full">
-          <label className={`capitalize text-sm ${error && "text-red-500"}`}>
-            {label ? label : name}
-          </label>
+        <div className="grid gap-1 w-full flex-1">
+          {!nolabel && (
+            <label className={`capitalize text-sm ${error && "text-red-500"}`}>
+              {label ? label : name}
+            </label>
+          )}
           <div className="relative">
             {icon ? (
               <img
@@ -47,8 +54,12 @@ const Input = ({
             <input
               type={type}
               name={name}
+              disabled={disabled}
+              value={value ? value : field.value}
+              onBlur={onBlur ? onBlur : field.onBlur}
+              onChange={field.onChange}
               placeholder={placeholder}
-              {...field}
+              onClick={onClick}
               className={twMerge(
                 className,
                 `border-2 border-gray-100 rounded-md py-[7px]  ${

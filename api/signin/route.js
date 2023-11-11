@@ -26,7 +26,7 @@ router.post("/", signInValidator, async (req, res) => {
     const token = auth.createToken(existingUser.user._doc._id);
 
     res.status(200).json({
-      token,
+      ...token,
       auth: true,
       session: {
         email: existingUser.user._doc.email,

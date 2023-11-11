@@ -1,15 +1,20 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "./hooks/AuthProvider";
 import Navbar from "./components/dashboard/Navbar";
+import { autoLogin, getSession } from "./hooks/useAuth";
+import { useEffect } from "react";
 
 const App = () => {
-  const { isLoggedIn } = useAuth();
+  const session = getSession();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    autoLogin();
+  }, []);
 
   return (
     <>
-      <body className="md:bg-gray-50 p-6">
-        {isLoggedIn && <Navbar />}
+      <body className="md:bg-gray-50 p-4 md:p-6">
+        {session && <Navbar />}
         <Outlet />
       </body>
     </>

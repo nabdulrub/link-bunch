@@ -19,16 +19,18 @@ export const AuthManager = () => {
     }
   };
 
-  const verifyToken = (token) => {
+  const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization;
+
     try {
       const verified = jwt.verify(token, secret);
 
-      if (verified) return { token, auth: true };
+      if (!verified) return res.status(401).json({ error: "Unauthorized" });
 
-      return { token, auth: false };
+      next();
     } catch (error) {
       console.error("Error authenticating user or bad token!");
-      return { error: error, auth: false };
+      res.status(500).json({ error: "Internal Server Error Finding User" });
     }
   };
 

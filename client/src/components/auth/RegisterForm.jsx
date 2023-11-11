@@ -3,11 +3,9 @@ import Input from "../Input";
 import emailsvg from "../../assets/images/icon-email.svg";
 import passwordsvg from "../../assets/images/icon-password.svg";
 import devlinks from "../../assets/images/logo-devlinks-large.svg";
-import { useAuth } from "../../hooks/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -25,8 +23,6 @@ const RegisterForm = () => {
       confirmedPassword: "",
     },
   });
-
-  if (isLoggedIn) return navigate("/");
 
   const onSubmit = async (data) => {
     try {

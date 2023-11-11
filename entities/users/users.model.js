@@ -22,6 +22,18 @@ const userSchema = new Schema({
     unique: true,
     ...schema.username,
   },
+  avatar: {
+    require: false,
+    type: String,
+  },
+  firstname: {
+    require: false,
+    ...schema.title,
+  },
+  lastname: {
+    require: false,
+    ...schema.title,
+  },
 });
 
 // Create a model for the User

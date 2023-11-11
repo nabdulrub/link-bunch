@@ -30,13 +30,97 @@ export const UserManager = () => {
     }
   };
 
-  const updateUser = () => {};
+  const updateUser = async ({ firstname, lastname, email, userId }) => {
+    try {
+      if (!firstname || !lastname || !email) {
+        return { status: 404, message: "No input provided from body" };
+      }
+
+      if (!userId) {
+        return { status: 404, message: "No user id provided from body" };
+      }
+
+      const updatedUser = await User.findById(userId);
+
+      if (!updatedUser) {
+        return { status: 404, message: "User not found" };
+      }
+
+      updatedUser.firstname = firstname;
+      updatedUser.lastname = lastname;
+      updatedUser.email = email;
+
+      await updatedUser.save();
+
+      return {
+        user: { ...updatedUser },
+        status: 200,
+        message: "User info updated successfully",
+      };
+    } catch (error) {
+      console.error("Internal Server Error:", error);
+      return {
+        status: 500,
+        message: "Internal Server Error Updating User Info",
+      };
+    }
+  };
 
   const deleteUser = () => {};
 
-  const getUserById = () => {};
+  const getUserById = async ({ userId }) => {
+    try {
+      if (!userId) {
+        return { status: 404, message: "No userId provided in input" };
+      }
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return { status: 404, message: "User does not exist" };
+      }
+
+      return {
+        user,
+        status: 200,
+        message: "User found successfully",
+      };
+    } catch (error) {
+      console.error("Internal Server Error:", error);
+      return {
+        status: 500,
+        message: "Internal Server Error Finding User Avatar",
+      };
+    }
+  };
 
   const getUserByEmail = () => {};
+
+  const uploadUserAvatar = async ({ base64, userId }) => {
+    try {
+      if (!base64 && !userId) {
+        return { status: 404, message: "No Image or title found in input" };
+      }
+
+      const updatedUser = await User.findById(userId);
+
+      updatedUser.avatar = base64;
+
+      await updatedUser.save();
+
+      return {
+        user: { ...updatedUser },
+        status: 200,
+        message: "User avatar added successfully",
+      };
+    } catch (error) {
+      console.error("Internal Server Error:", error);
+      return {
+        status: 500,
+        message: "Internal Server Error Adding User Avatar",
+      };
+    }
+  };
 
   const signInUser = async ({ email, password }) => {
     try {
@@ -76,5 +160,6 @@ export const UserManager = () => {
     getUserById,
     getUserByEmail,
     signInUser,
+    uploadUserAvatar,
   };
 };

@@ -1,18 +1,15 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Input from "../Input";
 import emailsvg from "../../assets/images/icon-email.svg";
 import passwordsvg from "../../assets/images/icon-password.svg";
 import devlinks from "../../assets/images/logo-devlinks-large.svg";
-import { useAuth } from "../../hooks/AuthProvider";
+import { signIn } from "../../hooks/useAuth";
+import Input from "../Input";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 const SignInForm = () => {
   const [formError, setFormError] = useState(undefined);
-  const { isLoggedIn, signIn } = useAuth();
   const navigate = useNavigate();
-
-  if (isLoggedIn) return navigate("/dashboard");
 
   const {
     handleSubmit,
@@ -44,11 +41,12 @@ const SignInForm = () => {
       if (response.ok) {
         reset();
         signIn({ userData: result?.session, token: result?.token });
+        navigate(0);
       }
 
       if (!response.ok) {
         if (response.status === 401)
-          return setFormError("Pleasse check your password");
+          return setFormError("Please check your password");
         console.log(response.status);
       }
     } catch (error) {

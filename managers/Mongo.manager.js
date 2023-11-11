@@ -1,5 +1,5 @@
-import moongoose from "mongoose";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 export const MongoDB = () => {
   const connect = async () => {
@@ -7,17 +7,12 @@ export const MongoDB = () => {
       dotenv.config();
       const url = process.env.DATABASE_URL;
 
-      const database = await moongoose.connect(url);
-
-      if (database.connection.readyState) {
-        console.log("Connected to database (MongoDB)");
-      }
+      const database = await mongoose.connect(url);
     } catch (error) {
       console.error("Error connecting to MongoDB:", error);
+      throw error; // Throw the error for handling externally
     }
   };
-
-  const config = () => {};
 
   return { connect };
 };
