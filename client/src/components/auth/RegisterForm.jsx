@@ -4,6 +4,8 @@ import emailsvg from "../../assets/images/icon-email.svg";
 import passwordsvg from "../../assets/images/icon-password.svg";
 import devlinks from "../../assets/images/logo-devlinks-large.svg";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../hooks/useFetch";
+import { signIn } from "../../hooks/useAuth";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -26,25 +28,17 @@ const RegisterForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost:3000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password: data.password,
-          email: data.email,
-        }),
+      console.log(data);
+      const response = await api.post("/api/register", {
+        password: data.password,
+        email: data.email,
       });
-
-      const result = await response.json();
 
       if (response.ok) {
         reset();
+        signIn({ userData: response?.session, token: response?.token });
         navigate("/");
       }
-
-      console.log(result);
 
       console.log(response);
     } catch (error) {

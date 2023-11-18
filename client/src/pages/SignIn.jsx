@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import SignInForm from "../components/auth/SignInForm";
-import { autoLogin, getSession } from "../hooks/useAuth";
+import { getSession } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
@@ -11,8 +11,6 @@ const SignIn = () => {
 
     if (session) {
       navigate("/dashboard?tab=links");
-    } else {
-      autoLogin();
     }
   }, [navigate]);
 

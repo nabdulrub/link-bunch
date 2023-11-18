@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "./Button";
 import Input from "./Input";
 import linkicon from "../assets/images/icon-link.svg";
@@ -15,6 +14,8 @@ import gitlab from "../assets/images/icon-gitlab.svg";
 import twitch from "../assets/images/icon-twitch.svg";
 import twitter from "../assets/images/icon-twitter.svg";
 import stackoverflow from "../assets/images/icon-stack-overflow.svg";
+import twoLines from "../assets/images/icon-drag-and-drop.svg";
+
 import Dropdown from "./Dropdown";
 
 const platformOptions = [
@@ -33,11 +34,14 @@ const platformOptions = [
   { value: "StackOverflow", icon: stackoverflow },
 ];
 
-const LinkForm = ({ index, remove, control }) => {
+const LinkForm = ({ index, remove, control, errors }) => {
   return (
-    <div className="bg-gray-50 p-5 w-full">
+    <div className="bg-gray-50 p-5 w-full rounded-xl">
       <div className="flex justify-between w-full">
-        <p className="text-gray-500">Link #{index + 1}</p>
+        <div className="flex items-center gap-2">
+          <img src={twoLines} alt="twoLines" className="w-5 h-5" />
+          <p className="text-gray-500 font-semibold">Link #{index + 1}</p>
+        </div>
         <Button
           variant="ghost"
           className={"text-gray-500 font-medium"}
@@ -46,18 +50,22 @@ const LinkForm = ({ index, remove, control }) => {
           Remove
         </Button>
       </div>
-      <div>
+      <div className="flex flex-col gap-4">
+        <Dropdown
+          options={platformOptions}
+          control={control}
+          required
+          error={errors?.platform?.message}
+          name={`links.${index}.platform`}
+        />
         <Input
+          required
           control={control}
           name={`links.${index}.link`}
           label={"Link"}
           icon={linkicon}
+          error={errors?.link?.message}
           placeholder={"e.g. https://www.github.com/johnappleseed"}
-        />
-        <Dropdown
-          options={platformOptions}
-          control={control}
-          name={`links.${index}.platform`}
         />
       </div>
     </div>

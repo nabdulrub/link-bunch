@@ -15,12 +15,8 @@ const userSchema = new Schema({
   },
   img: {
     require: false,
+
     ...schema.avatar,
-  },
-  username: {
-    require: false,
-    unique: true,
-    ...schema.username,
   },
   avatar: {
     require: false,

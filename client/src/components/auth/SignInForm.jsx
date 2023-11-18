@@ -6,6 +6,7 @@ import devlinks from "../../assets/images/logo-devlinks-large.svg";
 import { signIn } from "../../hooks/useAuth";
 import Input from "../Input";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../hooks/useFetch";
 
 const SignInForm = () => {
   const [formError, setFormError] = useState(undefined);
@@ -28,26 +29,16 @@ const SignInForm = () => {
   const onSubmit = async (data) => {
     try {
       setFormError(undefined);
-      const response = await fetch("http://localhost:3000/api/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await api.post("/api/signin", data);
 
-      const result = await response.json();
-
-      if (response.ok) {
+      if (response) {
         reset();
-        signIn({ userData: result?.session, token: result?.token });
+        signIn({ userData: response?.session, token: response?.token });
         navigate(0);
       }
 
-      if (!response.ok) {
-        if (response.status === 401)
-          return setFormError("Please check your password");
-        console.log(response.status);
+      if (!response) {
+        return setFormError("Please check your password");
       }
     } catch (error) {
       console.error(error);

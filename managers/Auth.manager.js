@@ -27,6 +27,7 @@ export const AuthManager = () => {
 
       if (!verified) return res.status(401).json({ error: "Unauthorized" });
 
+      req.body.userId = verified.id;
       next();
     } catch (error) {
       console.error("Error authenticating user or bad token!");

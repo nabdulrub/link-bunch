@@ -66,8 +66,6 @@ export const UserManager = () => {
     }
   };
 
-  const deleteUser = () => {};
-
   const getUserById = async ({ userId }) => {
     try {
       if (!userId) {
@@ -93,8 +91,6 @@ export const UserManager = () => {
       };
     }
   };
-
-  const getUserByEmail = () => {};
 
   const uploadUserAvatar = async ({ base64, userId }) => {
     try {
@@ -156,9 +152,7 @@ export const UserManager = () => {
   return {
     createUser,
     updateUser,
-    deleteUser,
     getUserById,
-    getUserByEmail,
     signInUser,
     uploadUserAvatar,
   };

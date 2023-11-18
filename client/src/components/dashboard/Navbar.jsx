@@ -1,9 +1,9 @@
-import links from "../../assets/images/icon-links-header.svg";
 import profile from "../../assets/images/icon-profile-details-header.svg";
 import large_devlinks from "../../assets/images/logo-devlinks-large.svg";
 import small_devlinks from "../../assets/images/logo-devlinks-small.svg";
+import Copy from "../icons/Copy";
+import Profile from "../icons/Profile";
 import eye from "../../assets/images/icon-preview-header.svg";
-
 import { getSession, signOut } from "../../hooks/useAuth";
 import Button from "../Button";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -28,15 +28,27 @@ const Navbar = () => {
         <Button
           href={`/dashboard?tab=links`}
           variant={isLinksActive ? "secondary" : "ghost"}
-          icon={<img src={links} alt="link" className="text-[#633CFF] w-6 " />}
+          icon={
+            <Copy
+              className={
+                isLinksActive ? "fill-[#633CFF]" : "hover:fill-[#633CFF]"
+              }
+            />
+          }
         >
           <span className="hidden md:block">Links</span>
         </Button>
         <Button
           href={`/dashboard?tab=profile`}
           variant={isProfileActive ? "secondary" : "ghost"}
-          className="gap-2"
-          icon={<img src={profile} alt="link" className="w-7" />}
+          className="gap-2 "
+          icon={
+            <Profile
+              className={
+                isProfileActive ? "fill-[#633CFF]" : "hover:fill-[#633CFF]"
+              }
+            />
+          }
         >
           <span className="hidden md:block">Profile Details</span>
         </Button>
@@ -44,7 +56,7 @@ const Navbar = () => {
 
       <div className="flex gap-4 items-center justify-center">
         <Button
-          href={"/preview"}
+          href={`/${session?.id}`}
           variant="outline"
           icon={<img src={eye} alt="eye" className="block md:hidden" />}
         >
@@ -52,7 +64,7 @@ const Navbar = () => {
         </Button>
         <Button
           variant="destructive"
-          className={"lg:block hidden"}
+          className={"lg:flex hidden"}
           onClick={() => {
             signOut();
             navigate("/");

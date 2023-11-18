@@ -1,10 +1,10 @@
 import { getToken } from "../hooks/useAuth";
 
-export const getUser = async () => {
+export const getLinks = async () => {
   try {
     const token = getToken();
 
-    const response = await fetch("http://localhost:3000/api/users", {
+    const response = await fetch("http://localhost:3000/api/links", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

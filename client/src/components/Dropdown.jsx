@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import ArrowDown from "../assets/images/icon-chevron-down.svg";
 import Input from "./Input";
 
-const Dropdown = ({ options, control, name }) => {
+const Dropdown = ({ options, control, name, required }) => {
   const [value, setValue] = useState("");
   const [icon, setIcon] = useState(null);
   const [open, setOpen] = React.useState(false);
@@ -15,11 +16,13 @@ const Dropdown = ({ options, control, name }) => {
   return (
     <div className="relative">
       <Input
-        value={value}
+        required={required}
+        dropdownValue={value}
         control={control}
         name={name}
         icon={icon}
         label={"Platform"}
+        placeholder={"Select the platform"}
         className="bg-white outline-none  caret-transparent cursor-pointer"
         onClick={() => (!open ? setOpen(true) : setOpen(false))}
       />
@@ -30,9 +33,9 @@ const Dropdown = ({ options, control, name }) => {
       {open ? (
         <div
           onBlur={() => setOpen(false)}
-          className={`absolute top-20 border-[1px] border-gray-300 bg-white w-full px-4 transition-all duration-200 transform origin-top opacity-100 rounded-xl shadow-xl max-h-[300px] overflow-y-scroll`}
+          className={`absolute top-20 z-30 border-[1px] border-gray-300 bg-white w-full px-4 transition-all duration-200 transform origin-top opacity-100 rounded-xl shadow-xl max-h-[300px] overflow-y-scroll dropdown-scroll`}
         >
-          {options.map((value, idx) => (
+          {options?.map((value, idx) => (
             <p
               key={idx}
               onClick={() => handleChange(value)}
@@ -49,6 +52,7 @@ const Dropdown = ({ options, control, name }) => {
           className={`absolute top-17 bg-white w-full p-4 transition-all duration-200 transform origin-top opacity-0`}
         ></div>
       )}
+      <img src={ArrowDown} alt="arrow" className="absolute top-10 right-5" />
     </div>
   );
 };

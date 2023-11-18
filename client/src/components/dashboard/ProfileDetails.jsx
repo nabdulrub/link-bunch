@@ -1,28 +1,12 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import UploadImage from "../UploadImage";
+import { useUser } from "../../context/UserContext";
 import UpdateInfo from "../UpdateInfo";
-import { getUser } from "../../fetch/getUser";
+import UploadImage from "../UploadImage";
 
 const ProfileDetails = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    async function getUserProfile() {
-      const user = await getUser();
-      setUser(user.user);
-    }
-
-    getUserProfile();
-  }, []);
-
-  const revalidateUser = async () => {
-    const userData = await getUser();
-    setUser(userData.user);
-  };
+  const { userData, revalidate } = useUser();
 
   return (
-    <div className="h-full flex-1 rounded-xl bg-white relative">
+    <div className="min-h-full flex-1 rounded-xl bg-white relative">
       <div className="p-2 md:p-10 flex flex-col gap-10">
         <div className="flex flex-col gap-10 md:gap-8">
           <div className="flex flex-col gap-2 md:gap-4">
@@ -33,10 +17,10 @@ const ProfileDetails = () => {
           </div>
         </div>
         <div>
-          <UploadImage avatar={user?.avatar} revalidate={revalidateUser} />
+          <UploadImage avatar={userData?.avatar} revalidate={revalidate} />
         </div>
         <div>
-          {user && <UpdateInfo user={user} revalidate={revalidateUser} />}
+          {userData && <UpdateInfo user={userData} revalidate={revalidate} />}
         </div>
       </div>
     </div>

@@ -1,20 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { useLinks } from "../../context/LinkContext";
 import Button from "../Button";
 import AddLinks from "./AddLinks";
+import CurrentLinks from "./CurrentLinks";
 import NoLinks from "./NoLinks";
-import { useFieldArray, useForm } from "react-hook-form";
 
 const Links = () => {
-  const [isAdding, setIsAdding] = useState(false);
+  const { links } = useLinks();
+  const [hasLinks, setHasLinks] = useState(false);
 
   const form = useForm({
     defaultValues: {
-      links: [
-        {
-          platform: "",
-          link: "",
-        },
-      ],
+      links: [],
     },
   });
 
@@ -25,8 +23,14 @@ const Links = () => {
     name: "links",
   });
 
+  useEffect(() => {
+    links?.length || fields.length >= 1
+      ? setHasLinks(true)
+      : setHasLinks(false);
+  }, [links, fields]);
+
   return (
-    <div className="h-full flex-1 rounded-xl bg-white">
+    <div className="min-h-full flex-1 rounded-xl bg-white relative">
       <div className="p-2 md:p-10 flex flex-col gap-6">
         <div className="flex flex-col gap-10 md:gap-8">
           <div className="flex flex-col gap-2 md:gap-4">
@@ -40,20 +44,23 @@ const Links = () => {
           </div>
           <Button
             variant="outline"
-            className={"w-full justify-center text-xl md:text-base"}
-            onClick={append}
+            className={"w-full justify-center text-md md:text-base"}
+            onClick={() => {
+              append();
+              setHasLinks(true);
+            }}
           >
             + Add new link
           </Button>
         </div>
-        <AddLinks remove={remove} form={form} fields={fields} />
-        {/* <NoLinks /> */}
-      </div>
-      <span className="block w-full h-1 bg-gray-100" />
-      <div className="px-6 py-3 flex w-full items-center justify-end">
-        <Button variant="default" disabled>
-          Save
-        </Button>
+        {hasLinks ? (
+          <>
+            <CurrentLinks links={links} />
+            <AddLinks remove={remove} form={form} fields={fields} />
+          </>
+        ) : (
+          <NoLinks />
+        )}
       </div>
     </div>
   );

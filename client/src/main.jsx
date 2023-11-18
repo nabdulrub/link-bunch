@@ -6,9 +6,14 @@ import "./index.css";
 import Dashboard from "./pages/Dashboard.jsx";
 import Register from "./pages/Register.jsx";
 import SignIn from "./pages/SignIn.jsx";
-import ProfileDetails from "./components/dashboard/ProfileDetails.jsx";
+import Preview from "./pages/Preview.jsx";
+import Providers from "./Providers.jsx";
 
 const router = createBrowserRouter([
+  {
+    element: <Preview />,
+    path: "/:id",
+  },
   {
     element: <App />,
     children: [
@@ -30,6 +35,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Providers>
+      <RouterProvider router={router} />
+    </Providers>
   </React.StrictMode>
 );

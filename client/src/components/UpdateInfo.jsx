@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "./Input";
 import Button from "./Button";
-import { getSession, getToken } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { getToken } from "../hooks/useAuth";
 
 const UpdateInfo = ({ user, revalidate }) => {
   const [formError, setFormError] = useState(null);
   const token = getToken();
-  const session = getSession();
-  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -21,7 +18,6 @@ const UpdateInfo = ({ user, revalidate }) => {
     },
   } = useForm({
     defaultValues: {
-      userId: session.id,
       firstname: user?.firstname ? user.firstname : "",
       lastname: user?.lastname ? user.lastname : "",
       email: user?.email ? user.email : "",
@@ -40,8 +36,6 @@ const UpdateInfo = ({ user, revalidate }) => {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
-
       if (response.ok) {
         reset();
         await revalidate();
@@ -57,16 +51,15 @@ const UpdateInfo = ({ user, revalidate }) => {
 
   useEffect(() => {
     reset({
-      userId: session.id,
       firstname: user?.firstname ? user.firstname : "",
       lastname: user?.lastname ? user.lastname : "",
       email: user?.email ? user.email : "",
     });
-  }, [user, session.id, reset]);
+  }, [user, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-3 bg-gray-50 rounded-lg p-5">
+      <div className="flex flex-col gap-3 bg-gray-50 rounded-lg p-5 mb-20">
         <div className="flex justify-between lg:gap-44 md:flex-row flex-col">
           <label className="text-gray-500 flex-1 lg:flex-none md:text-base text-sm">
             First name*
@@ -110,7 +103,7 @@ const UpdateInfo = ({ user, revalidate }) => {
         </div>
         {formError && <p className="text-red-500 font-sm">{formError}</p>}
       </div>
-      <div className="mt-10 md:mt-20">
+      <div className="md:absolute bottom-0 left-0 w-full">
         <span className="block w-full h-1 bg-gray-100" />
         <div className="px-6 py-3 flex w-full items-center justify-end">
           <Button type={"submit"} variant="default" disabled={isSubmitting}>

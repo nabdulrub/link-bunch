@@ -1,0 +1,35 @@
+import {
+  CodePen,
+  DevTo,
+  Facebook,
+  FreeCodeCamp,
+  FrontendMentor,
+  GitLab,
+  Github,
+  Hashnode,
+  LinkedIn,
+  StackOverflow,
+  Twitch,
+  Twitter,
+  YouTube,
+} from "../components/icons/Platforms";
+
+export const PhoneLinkData = {
+  GitHub: { color: "bg-gray-800", icon: <Github /> },
+  "Frontend Mentor": {
+    color: "bg-white border-[1px] border-gray-300 text-black",
+    fontColor: "text-black",
+    icon: <FrontendMentor />,
+  },
+  Twitter: { color: "bg-blue-500", icon: <Twitter /> },
+  LinkedIn: { color: "bg-blue-600", icon: <LinkedIn /> },
+  YouTube: { color: "bg-red-600", icon: <YouTube /> },
+  Facebook: { color: "bg-blue-900", icon: <Facebook /> },
+  Twitch: { color: "bg-purple-700 ", icon: <Twitch /> },
+  DevTo: { color: "bg-gray-700", icon: <DevTo /> },
+  "Free Code Camp": { color: "bg-pink-600", icon: <FreeCodeCamp /> },
+  GitLab: { color: "bg-orange-600", icon: <GitLab /> },
+  Hashnode: { color: "bg-blue-700", icon: <Hashnode /> },
+  StackOverflow: { color: "bg-orange-500", icon: <StackOverflow /> },
+  CodePen: { color: "bg-black", icon: <CodePen /> },
+};

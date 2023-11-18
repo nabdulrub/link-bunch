@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dropdown-scroll::-webkit-scrollbar {
+  width: 13px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-track {
+  border: solid 5px transparent;
+}
+
+.dropdown-scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(169, 169, 169);
+  border-radius: 1rem;
+  border: solid 3px white;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

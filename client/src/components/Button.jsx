@@ -10,17 +10,15 @@ const Button = ({
   type,
   disabled,
 }) => {
+  const baseStyle =
+    "flex gap-1 items-center font-bold py-[24px] px-4 rounded-lg max-h-6";
+
   const variants = {
-    outline:
-      "flex gap-1 border-2 border-[#633CFF] bg-white transition-all duration-300 hover:bg-[#EFEBFF] text-[#633CFF] font-bold rounded-lg p-4 md:px-[1.69rem] md:py-[.69rem]", // outline
-    ghost:
-      "flex gap-1 items-center text-gray-500  hover:text-[#633CFF] transition-all duration-200 font-bold p-4 md:px-[1.69rem] md:py-[.69rem]", // ghost
-    secondary:
-      "flex gap-1 items-center bg-[#EFEBFF] text-[#633CFF] font-bold rounded-lg p-4 md:px-[1.69rem] md:py-[.69rem]",
-    default:
-      "flex gap-1 items-center bg-[#633CFF] text-white font-bold rounded-lg p-4 md:px-[1.69rem] md:py-[.69rem] disabled:bg-opacity-50", // default
-    destructive:
-      "flex gap-1 border-2 border-red-500 bg-white transition-all duration-300 hover:bg-[#EFEBFF] text-red-500 font-bold rounded-lg p-4 md:px-[1.69rem] md:py-[.69rem]", // destructive
+    outline: `${baseStyle} flex gap-1 items-center border-2 border-[#633CFF] text-[#633CFF] hover:border-transparent hover:bg-[#633CFF] hover:text-white transition-all duration-300`, // outline
+    ghost: `${baseStyle} text-gray-500 hover:text-[#633CFF] transition-all duration-200 font-bold hover:text-[#633CFF] hover:bg-[#EFEBFF]`, // ghost
+    secondary: ` ${baseStyle} bg-[#EFEBFF] text-[#633CFF]`,
+    default: `${baseStyle} flex gap-1 border-2 border-transparent items-center bg-[#633CFF] text-white hover:border-[#633CFF] hover:text-[#633CFF] hover:bg-white transition-all duration-300`, // default
+    destructive: `${baseStyle} flex gap-1 items-center border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300`, // destructive
   };
 
   return href ? (
@@ -37,7 +35,7 @@ const Button = ({
     </a>
   ) : (
     <button
-      className={twMerge(variants[variant], className)}
+      className={twMerge(baseStyle, variants[variant], className)}
       onClick={onClick}
       type={type}
       disabled={disabled}
