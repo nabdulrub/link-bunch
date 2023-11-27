@@ -1,0 +1,7 @@
+services:
+  - name:
+    type: web
+    buildCommand: |
+      cd client && pnpm install && pnpm run build
+      cd .. && pnpm install
+    startCommand: node server.js

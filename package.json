@@ -6,13 +6,16 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "client": "npm run dev --prefix client",
     "clientinstall": "npm install --prefix client",
     "dev": "concurrently \"npm run start\" \"npm run client"
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=18.15.0 <19.0.0"
+  },
   "dependencies": {
     "@tanstack/react-query": "^5.8.4",
     "bcrypt": "^5.1.1",
