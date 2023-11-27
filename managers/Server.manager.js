@@ -14,6 +14,7 @@ const __dirname = path.dirname(__filename);
 
 // Get the api folder directory ex.(system:/project/api)
 const apiDirectory = path.join(__dirname, "../api");
+const buildDirectory = path.join(__dirname, "../client/build");
 
 export const ServerManager = () => {
   const setMiddlewares = () => {
@@ -63,10 +64,21 @@ export const ServerManager = () => {
     });
   };
 
+  const setBuildRoutes = () => {
+    // Serve the built React app
+    app.use(express.static(buildDirectory));
+
+    // Handle React Router routes
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(buildDirectory, "index.html"));
+    });
+  };
+
   // The start method is ran in the main file of the server to the run the server
   const start = (startPort) => {
     setMiddlewares();
     handleBadRoutes();
+    setBuildRoutes();
     setRoutes();
     const port = startPort;
     app.listen(port, () => {
