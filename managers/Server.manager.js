@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 
 // Get the api folder directory ex.(system:/project/api)
 const apiDirectory = path.join(__dirname, "../api");
-const buildDirectory = path.join(__dirname, "../client/build");
+const buildDirectory = path.join(__dirname, "../client/dist");
 
 export const ServerManager = () => {
   const setMiddlewares = () => {
