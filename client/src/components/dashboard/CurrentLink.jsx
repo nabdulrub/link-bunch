@@ -26,7 +26,7 @@ const CurrentLink = ({ link, icon, platform, id }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/links", {
+      const response = await fetch("/api/links", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

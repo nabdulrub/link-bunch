@@ -10,6 +10,7 @@ const { verifyToken } = AuthManager();
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { platform, link, userId } = req.body;
+    console.log(req.body);
 
     const newLink = await createLink({ link, platform, userId });
 

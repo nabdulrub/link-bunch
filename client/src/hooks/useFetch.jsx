@@ -1,5 +1,3 @@
-const BASE_URL = "http://localhost:3000";
-
 const makeApiCalls = async (url, method, data = null, token = null) => {
   try {
     const options = {
@@ -17,7 +15,7 @@ const makeApiCalls = async (url, method, data = null, token = null) => {
       options.body = JSON.stringify(data);
     }
 
-    const response = await fetch(BASE_URL + url, options);
+    const response = await fetch(url, options);
     const responseData = await response.json();
 
     if (!response.ok) {
