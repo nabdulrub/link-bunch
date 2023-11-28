@@ -87,7 +87,7 @@ export const UserManager = () => {
       console.error("Internal Server Error:", error);
       return {
         status: 500,
-        message: "Internal Server Error Finding User Avatar",
+        message: "Internal Server Error Finding User",
       };
     }
   };

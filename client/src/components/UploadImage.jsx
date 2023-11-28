@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { convertBase64 } from "../../utils/convertBase64.js";
 import { useNavigate } from "react-router-dom";
+import { convertBase64 } from "../../utils/convertBase64.js";
 import { getSession, getToken } from "../hooks/useAuth.jsx";
-import Upload from "./icons/Upload.jsx";
 import Loader from "./icons/Loader.jsx";
+import Upload from "./icons/Upload.jsx";
 
 const UploadImage = ({ avatar, revalidate }) => {
   const user = getSession();
@@ -16,17 +16,14 @@ const UploadImage = ({ avatar, revalidate }) => {
   const uploadImage = async (base64) => {
     try {
       setLoading(true);
-      const response = await fetch(
-        "http://localhost:3000/api/profile/upload/avatar",
-        {
-          method: "POST",
-          body: JSON.stringify({ base64, userId: user.id }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
+      const response = await fetch("/api/profile/upload/avatar", {
+        method: "POST",
+        body: JSON.stringify({ base64, userId: user.id }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
 
       if (response.ok) {
         await revalidate();

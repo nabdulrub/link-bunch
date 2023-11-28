@@ -15,6 +15,7 @@ export const LinkProvider = ({ children }) => {
     async function getUserLinks() {
       if (session) {
         const userLinks = await getLinks();
+        console.log(userLinks);
 
         if (userLinks) {
           setLinks(userLinks.links);

@@ -27,7 +27,7 @@ const UpdateInfo = ({ user, revalidate }) => {
   const onSubmit = async (data) => {
     try {
       setFormError("");
-      const response = await fetch("http://localhost:3000/api/profile/info", {
+      const response = await fetch("/api/profile/info", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

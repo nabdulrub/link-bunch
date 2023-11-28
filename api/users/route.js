@@ -16,7 +16,6 @@ router.get("/", verifyToken, async (req, res) => {
     if (user.status !== 200) {
       return res.status(user.status).json(user.message);
     }
-
     res.status(user.status).json({ ...user });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error Finding User" });

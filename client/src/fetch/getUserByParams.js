@@ -10,8 +10,11 @@ export const getUserByParams = async ({ id }) => {
     if (response.ok) {
       return await response.json();
     }
-
     if (!response.ok) {
+      console.error(
+        `Request failed with status ${response.status}:`,
+        await response.text()
+      );
       return null;
     }
   } catch (error) {

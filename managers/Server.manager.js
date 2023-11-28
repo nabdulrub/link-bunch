@@ -3,7 +3,6 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
-import multer from "multer";
 import cookieParser from "cookie-parser";
 import { fileURLToPath, URL } from "url";
 const app = express();
@@ -27,41 +26,44 @@ export const ServerManager = () => {
   const handleBadRoutes = () => {
     app.use((err, req, res, next) => {
       console.error(err.stack);
-      res.status(500).send("Something went wrong!");
+      res.status(500).json({ error: "Internal Server Error" });
     });
-    // app.use((req, res, next) => {
-    //   res.status(404).send("Route not found. Please check api folder");
-    // });
+
+    // Route not found middleware
+    app.use((req, res, next) => {
+      res
+        .status(404)
+        .json({ error: "Route not found. Please check api folder" });
+    });
   };
 
-  const setRoutes = () => {
-    // Stores all the folders in the /api directory
+  const setRoutes = async () => {
     const routeFolders = fs.readdirSync(apiDirectory, { withFileTypes: true });
 
-    // Loops through all the routes then sets folder name (api route) & route.js (middleware)
-    routeFolders.forEach((routeName) => {
+    // Use map to create an array of promises
+    const routePromises = routeFolders.map(async (routeName) => {
       if (routeName.isDirectory()) {
         const routeFolder = routeName.name;
-        const routePath = path.join(apiDirectory, routeFolder, "route.js"); // /api/{routeFolder}/route.js
-        const routeStats = fs.statSync(routePath); // Used to make sure the route leads to an exisiting file
-        const fileURL = new URL(`file://${path.resolve(routePath)}`); // Create fileURl for import the middleware (route.js)
+        const routePath = path.join(apiDirectory, routeFolder, "route.js");
+        const routeStats = fs.statSync(routePath);
 
         if (routeStats.isFile() && routePath.endsWith(".js")) {
-          import(fileURL)
-            .then((module) => {
-              const route = module.default;
-              app.use(`/api/${routeFolder}`, route);
-              console.log(`/api/${routeFolder} route created.`);
-            })
-            .catch((err) => {
-              // handle errors while setting up routes
-              console.error(
-                `Error setting up route for ${routeFolder}: ${err}`
-              );
-            });
+          const fileURL = new URL(`file://${path.resolve(routePath)}`);
+          try {
+            const module = await import(fileURL);
+            const route = module.default;
+            const routePath = `/api/${routeFolder}`;
+            app.use(routePath, route);
+            console.log(`${routePath} route created.`);
+          } catch (err) {
+            console.error(`Error setting up route for ${routeFolder}: ${err}`);
+          }
         }
       }
     });
+
+    // Use Promise.all to wait for all dynamic imports to resolve
+    await Promise.all(routePromises);
   };
 
   const setBuildRoutes = () => {
@@ -69,17 +71,17 @@ export const ServerManager = () => {
     app.use(express.static(buildDirectory));
 
     // Handle React Router routes
-    app.get("*", (req, res) => {
+    app.get(/^(?!\/api).*/, (req, res) => {
       res.sendFile(path.join(buildDirectory, "index.html"));
     });
   };
 
   // The start method is ran in the main file of the server to the run the server
-  const start = (startPort) => {
+  const start = async (startPort) => {
     setMiddlewares();
+    await setRoutes();
+    await setBuildRoutes();
     handleBadRoutes();
-    setBuildRoutes();
-    setRoutes();
     const port = startPort;
     app.listen(port, () => {
       console.log(`App running on ${port}`);
