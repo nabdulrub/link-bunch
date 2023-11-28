@@ -26,7 +26,6 @@ const LinksPreview = () => {
       <div className="flex flex-col items-center justify-between gap-4">
         <img
           src={userData?.avatar}
-          alt="user"
           className=" w-28 h-28 object-cover rounded-full border-4 border-[#633CFF]"
         />
         <p className="font-bold text-2xl">
